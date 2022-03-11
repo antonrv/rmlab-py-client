@@ -49,7 +49,6 @@ User can also pass the credentials explicitly:
 
 ```py
 async with API(workgroup="myworkgroup", username="myusername", password="mypassword") as api:
-  # Some api commands
   pass
 ```
 
