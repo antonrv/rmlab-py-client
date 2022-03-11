@@ -8,8 +8,7 @@ Client - Server interaction requires a `API` asynchronous context manager:
 
 ```py
 import asyncio
-from rmlab.api import API
-
+from rmlab import API
 
 async def main():
 
@@ -48,8 +47,11 @@ In the previous case, user credentials are assumed to be set in environment vari
 User can also pass the credentials explicitly:
 
 ```py
-async with API(workgroup="myworkgroup", username="myusername", password="mypassword") as api:
-  pass
+from rmlab import API
+
+async def main():
+  async with API(workgroup="myworkgroup", username="myusername", password="mypassword") as api:
+    pass
 ```
 
 ## AsyncIO
