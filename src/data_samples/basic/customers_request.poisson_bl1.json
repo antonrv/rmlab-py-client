@@ -1,0 +1,4 @@
+{
+  "leisure": {"type": "poisson", "beta": 10.0, "scale": 300, "lambda_seats": 3},
+  "business": {"type": "poisson", "beta": 30.0, "scale": 400, "lambda_seats": 1.5}
+}
