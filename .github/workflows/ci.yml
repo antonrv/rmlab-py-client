@@ -1,5 +1,5 @@
 
-name: Unit testing, integration testing, build documentation, release to PyPi
+name: Integration testing, integration testing, build documentation, release to PyPi
 
 on: [push, pull_request]
 
