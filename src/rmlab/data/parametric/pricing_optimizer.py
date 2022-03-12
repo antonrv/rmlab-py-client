@@ -6,7 +6,7 @@ flights. In particular, it is needed to define:
 
 2. A **selector**, to specify the *inputs* of the optimization passes for each flight.
 
-3. An **operator**, to specify the set of *actions* and *algorithms* that will run on the input data.
+3. An **operator**, to specify the set of *actions* and *algorithms* that will run on the input data, encompasing:
 """
 
 
@@ -79,7 +79,7 @@ class OptimizerSelector:
 
     (flightInput) → [flight1, flight2, …, flightN]
 
-    Ie: from the rms-selector parameters we know, given a *flightInput*,
+    Ie: from the OptimizerSelector parameters we know, given a *flightInput*,
     the set of neighboring flights *[flight1, flight2, …, flightN]* on which
     optimization passes are run upon.
 
@@ -98,7 +98,7 @@ class OptimizerSelector:
     * Departing in the same hour slot as flightInput
     * Covering the same sector
 
-    we create the selector instance as:
+    then we create the selector instance as:
 
     ```py
     sel = OptimizerSelector(
@@ -170,15 +170,14 @@ class OptimizerOperator:
 
     1. Runs *q-forecast* forecaster on all input data
     2. Aggregates forecast data of all flights as a *0.5 exponential" weighting
-    3. Runs *dp-qsd* revenue maximizer on aggregated data
-    4. Modify the thresholds of the flight after maximization pass
+    3. Modify the thresholds of the flight after maximization pass
 
     we create an operator instance as:
 
     ```py
     op = OptimizerOperator(
       forecaster_type="q-forecast",
-      maximizer=maximizer,
+      maximizer=OptimizerMaximizer(...),
       aggregate_type="exponential",
       aggregate_value=0.5
       effects="commit"
@@ -192,15 +191,14 @@ class OptimizerOperator:
 
     1. Runs *bayesian* forecaster on all input data
     2. Aggregates forecast data of all flights *uniformly*
-    3. Runs *dp-qrsd* revenue maximizer on aggregated data
-    4. Do not apply the results to the thresholds
+    3. Do not apply the results to the thresholds
 
     we create an operator instance as:
 
     ```py
     op = OptimizerOperator(
       forecaster_type="q-forecast",
-      maximizer=maximizer,
+      maximizer=OptimizerMaximizer(...),
       aggregate_type="exponential",
       aggregate_value=0.5
       effects="none"
@@ -308,8 +306,8 @@ def make_pricing_optimizer_from_json(
 
     if not isinstance(content, dict):
         raise TypeError(f"Expected dict format in {filename_or_dict}")
-    
-    content : dict
+
+    content: dict
 
     mandatory_keys = ["schedule", "selector", "operator"]
     if not all([k in content for k in mandatory_keys]):

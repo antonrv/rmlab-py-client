@@ -10,7 +10,7 @@ from rmlab._data.enums import (
 
 
 class APIUploadPricingModels(APIUploadInternal):
-    """Exposes functions for uploading pricing models data to the RMLab server."""
+    """Exposes functions for uploading pricing models data to the server."""
 
     async def upload_pricing_range_model(
         self,

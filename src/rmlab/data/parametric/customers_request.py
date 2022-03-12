@@ -32,7 +32,7 @@ class ExponentialPoisson(BaseRequestModel):
     $$
     \lambda_{requests}(d) = CumulativeRequestsOn(d) - CumulativeRequestsOn(d+1).
     $$
-    
+
     Note that $d+1$ is the day *before* $d$.
 
     From $\lambda_{requests}$ we sample the number of booking requests on day before departure $d$ as:
@@ -139,8 +139,8 @@ def make_customers_request_model_from_json(
 
     if not isinstance(content, dict):
         raise ValueError(f"Expected dict format in {filename_or_dict}")
-    
-    content : dict
+
+    content: dict
 
     if len(content) > 0:
         models = list()

@@ -1,14 +1,16 @@
 import asyncio, os, pathlib
 import pandas as pd
-from pprint import pprint
 
 from rmlab import API
 
-_DataSamplesPath = str(pathlib.Path(os.path.realpath(__file__)).parent.parent) + '/data_samples/'
+_DataSamplesPath = (
+    str(pathlib.Path(os.path.realpath(__file__)).parent.parent) + "/data_samples/"
+)
+
 
 async def main():
 
-    # ---- Create an API context manager. 
+    # ---- Create an API context manager.
     # Will read  environment variables: RMLAB_WORKGROUP, RMLAB_USERNAME, RMLAB_PASSWORD
     async with API() as api:
 
@@ -24,20 +26,30 @@ async def main():
         # ---- Upload customers models to server
         await api.upload_batch_customers_models(
             scen_id,
-            request_models_fns=[_DataSamplesPath + "/basic/customers_request.poisson_bl1.json"],
-            choice_models_fns=[_DataSamplesPath + "/basic/customers_choice.mnlmultiple_bl1.json"],
+            request_models_fns=[
+                _DataSamplesPath + "/basic/customers_request.poisson_bl1.json"
+            ],
+            choice_models_fns=[
+                _DataSamplesPath + "/basic/customers_choice.mnl_bl1.json"
+            ],
         )
 
         # ---- Upload pricing models to server
         await api.upload_batch_pricing_models(
             scen_id,
             range_models_fns=[_DataSamplesPath + "/basic/pricing_range.sample.json"],
-            behavior_models_fns=[_DataSamplesPath + "/basic/pricing_behavior.sample.json"],
-            optimizer_models_fns=[_DataSamplesPath + "/basic/pricing_optimizer.sample.json"],
+            behavior_models_fns=[
+                _DataSamplesPath + "/basic/pricing_behavior.sample.json"
+            ],
+            optimizer_models_fns=[
+                _DataSamplesPath + "/basic/pricing_optimizer.sample.json"
+            ],
         )
 
         # ---- Upload parametric filters to bind previous models
-        await api.upload_parametric_filters(scen_id, _DataSamplesPath + "/basic/table.pfilter.json")
+        await api.upload_parametric_filters(
+            scen_id, _DataSamplesPath + "/basic/table.pfilter.json"
+        )
 
         # ---- Upload core items to server
         await api.upload_batch_core(
@@ -51,7 +63,12 @@ async def main():
         )
 
         # ---- Print the status after loading data
-        scen_dates, scen_items_count, scen_schedules_count, scen_flights_count = await api.fetch_info(scen_id)
+        (
+            scen_dates,
+            scen_items_count,
+            scen_schedules_count,
+            scen_flights_count,
+        ) = await api.fetch_info(scen_id)
         print(f"DATES {scen_dates}")
         print(f"ITEMS COUNT {scen_items_count}")
         print(f"SCHEDULES COUNT {scen_schedules_count}")
@@ -89,19 +106,21 @@ async def main():
     flight_books = flights_data[0]
     print(f"Looking at books of flight {flight_books.id}")
 
-    occupation_x = flight_books.timestamps_array
-    occupation_y = flight_books.cumulated_seats_array
     occupation_data = pd.DataFrame(
-        data={"Time": occupation_x, "Cumulated occupation": occupation_y}
+        data={
+            "Time": flight_books.timestamps_array,
+            "Cumulated occupation": flight_books.cumulated_seats_array,
+        }
     ).set_index("Time")
-    print(f"Occupation data: {occupation_data}")
+    print(f"Occupation data:\n{occupation_data}")
 
-    revenue_x = flight_books.timestamps_array
-    revenue_y = flight_books.cumulated_revenue_array
     revenue_data = pd.DataFrame(
-        data={"Time": revenue_x, "Cumulated revenue": revenue_y}
+        data={
+            "Time": flight_books.timestamps_array,
+            "Cumulated revenue (cents)": flight_books.cumulated_revenue_array,
+        }
     ).set_index("Time")
-    print(f"Revenue data: {revenue_data}")
+    print(f"Revenue data:\n{revenue_data}")
 
 
 if __name__ == "__main__":

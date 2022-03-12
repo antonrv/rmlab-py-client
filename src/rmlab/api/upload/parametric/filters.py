@@ -3,7 +3,7 @@ from rmlab.data.parametric.filter import PFilter
 
 
 class APIUploadParametric(APIUploadInternal):
-    """Interface to upload parametric data to server"""
+    """Exposes functions for uploading parametric filters to the server."""
 
     async def upload_parametric_filters(self, scen_id: int, data_fn: str) -> None:
         """Upload a set of parametric filters defined in a file.

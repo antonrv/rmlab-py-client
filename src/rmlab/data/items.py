@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 import importlib
 import inspect
-from rmlab._data.enums import DayOfWeek
+from rmlab._data.enums import CurrencyKind, DayOfWeek
 
 from rmlab._data.types import (
     AirlineLocation,
@@ -24,7 +24,7 @@ from rmlab._data.types import (
 
 @dataclass
 class PModel(BoundedItem, CoreItem):
-    """Item holding a set of parameters
+    """Item holding a set of parameters.
 
     Args:
         filename (str): Name of file storing the parameters
@@ -39,7 +39,7 @@ class PModel(BoundedItem, CoreItem):
 
 @dataclass
 class Airline(BoundedItem, CoreItem):
-    """Airline instance
+    """Airline instance.
 
     Args:
         name (str): Airline name and ID
@@ -52,7 +52,7 @@ class Airline(BoundedItem, CoreItem):
 
 @dataclass
 class Aircraft(BoundedItem, CoreItem):
-    """Aircraft instance
+    """Aircraft instance.
 
     Args:
         model (str): Aircraft model and ID
@@ -68,20 +68,24 @@ class Aircraft(BoundedItem, CoreItem):
 
 @dataclass
 class Country(BoundedItem, CoreItem):
-    """Country instance
+    """Country instance.
 
     Args:
         name (str): Country name and ID
-        currency (str): 3-letter currency code
+        currency (CurrencyKind): Country currency
     """
 
     name: str
-    currency: str
+    currency: CurrencyKind
+
+    def __post_init__(self):
+        if isinstance(self.currency, str):
+            self.currency = CurrencyKind.str_to_enum_value(self.currency)
 
 
 @dataclass
 class City(BoundedItem, CoreItem):
-    """City instance
+    """City instance.
 
     Args:
         name (str): City name and ID
@@ -94,7 +98,7 @@ class City(BoundedItem, CoreItem):
 
 @dataclass
 class CitySector(BoundedItem, DerivedItem, CustomersModelHolder, AirlineLocation):
-    """Pair of cities with specified direction
+    """Pair of cities with specified direction.
 
     Args:
         origin_id (str): Departure city ID
@@ -107,7 +111,7 @@ class CitySector(BoundedItem, DerivedItem, CustomersModelHolder, AirlineLocation
 
 @dataclass
 class CityRoute(BoundedItem, DerivedItem, CustomersModelHolder, AirlineLocation):
-    """Pair of cities with unspecified direction
+    """Pair of cities with unspecified direction.
 
     Args:
         first_id (str): First city ID of the pair in alphabetical order
@@ -120,7 +124,7 @@ class CityRoute(BoundedItem, DerivedItem, CustomersModelHolder, AirlineLocation)
 
 @dataclass
 class Airport(BoundedItem, CoreItem):
-    """Airport instance
+    """Airport instance.
 
     Args:
         name (str): Full airport name
@@ -148,7 +152,7 @@ class Airport(BoundedItem, CoreItem):
 
 @dataclass
 class Sector(BoundedItem, DerivedItem, AirlineLocation):
-    """Pair of airports with specified direction
+    """Pair of airports with specified direction.
 
     Args:
         origin_id (str): Departure airport ID
@@ -162,7 +166,7 @@ class Sector(BoundedItem, DerivedItem, AirlineLocation):
 
 @dataclass
 class Route(BoundedItem, DerivedItem, AirlineLocation):
-    """Pair of airports with unspecified direction
+    """Pair of airports with unspecified direction.
 
     Args:
         first_id (str): First airport ID of the pair in alphabetical order
@@ -176,7 +180,7 @@ class Route(BoundedItem, DerivedItem, AirlineLocation):
 
 @dataclass
 class Schedule(UnboundedItem, CoreItem):
-    """Schedule instance. Template generator for flights in an airline with common aircraft, sector and days of week
+    """Schedule instance. Template generator for flights in an airline with common aircraft, sector and days of week.
 
     Args:
         airline_id (str): Airline ID
@@ -246,7 +250,7 @@ class Schedule(UnboundedItem, CoreItem):
 
 @dataclass
 class Flight(UnboundedItem, DerivedItem, PricingModelHolder):
-    """Flight instance
+    """Flight instance.
 
     Args:
         seat_capacity (int): Seat capacity

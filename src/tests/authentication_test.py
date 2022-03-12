@@ -45,25 +45,17 @@ def login_data():
 
 def test_web_is_up(base_urls):
 
+    headers = {"User-Agent": "Mozilla/5.0"}
+
     if BaseURL in base_urls.api:
         # Expect correct html response
-        assert (
-            urlopen(
-                Request(base_urls.api, headers={"User-Agent": "Mozilla/5.0"})
-            ).getcode()
-            == 200
-        )
-        assert (
-            urlopen(
-                Request(base_urls.auth, headers={"User-Agent": "Mozilla/5.0"})
-            ).getcode()
-            == 200
-        )
+        assert urlopen(Request(base_urls.api, headers=headers)).getcode() == 200
+        assert urlopen(Request(base_urls.auth, headers=headers)).getcode() == 200
     else:
         # Testing/Dev API only. Expect not found (404) response since '/' resource is not defined
         with pytest.raises(HTTPError):
-            urlopen(Request(base_urls.api, headers={"User-Agent": "Mozilla/5.0"}))
-            urlopen(Request(base_urls.auth, headers={"User-Agent": "Mozilla/5.0"}))
+            urlopen(Request(base_urls.api, headers=headers))
+            urlopen(Request(base_urls.auth, headers=headers))
 
 
 async def test_log_in_out(login_data, base_urls):

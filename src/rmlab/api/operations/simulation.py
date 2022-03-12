@@ -15,7 +15,7 @@ from rmlab.data.scenario import (
 
 
 class APISimulation(APISimulationInternal):
-    """Exposes functions for running simulations on server."""
+    """Exposes functions for running simulations on server and adding simulation checkpoints."""
 
     async def upload_checkpoints(
         self, scen_id: int, checkpoints: List[datetime]
@@ -23,8 +23,8 @@ class APISimulation(APISimulationInternal):
         """Upload date checkpoints at which simulation is paused.
 
         Args:
-            scen_id (int): Scenario ID in which the simulation is running.
-            checkpoints (List[datetime]): List of checkpoints.
+            scen_id (int): Scenario ID in which the simulation is running
+            checkpoints (List[datetime]): List of checkpoints
         """
 
         await self._submit_call(
@@ -44,7 +44,7 @@ class APISimulation(APISimulationInternal):
         """Trigger a simulation run on a given scenario.
 
         Args:
-            scen_id (int): Scenario ID.
+            scen_id (int): Scenario ID
             next (Optional[datetime], optional): Checkpoint at which the simulation is stopped. Defaults to None.
 
         Raises:

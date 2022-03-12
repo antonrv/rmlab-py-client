@@ -8,7 +8,9 @@ from rmlab.api.upload.parametric.pricing import APIUploadPricingModels
 
 from rmlab._data.enums import ScenarioDayStatus, ScenarioState
 
-_DataSamplesPath = str(pathlib.Path(os.path.realpath(__file__)).parent.parent) + '/data_samples/'
+_DataSamplesPath = (
+    str(pathlib.Path(os.path.realpath(__file__)).parent.parent) + "/data_samples/"
+)
 
 
 class APISimulationUpload(
@@ -35,7 +37,7 @@ async def test_trigger():
                 _DataSamplesPath + "/basic/customers_request.poisson_bl1.json"
             ],
             choice_models_fns=[
-                _DataSamplesPath + "/basic/customers_choice.mnlmultiple_bl1.json"
+                _DataSamplesPath + "/basic/customers_choice.mnl_bl1.json"
             ],
         )
 
@@ -43,7 +45,9 @@ async def test_trigger():
         await api.upload_batch_pricing_models(
             scen_id,
             range_models_fns=[_DataSamplesPath + "/basic/pricing_range.sample.json"],
-            behavior_models_fns=[_DataSamplesPath + "/basic/pricing_behavior.sample.json"],
+            behavior_models_fns=[
+                _DataSamplesPath + "/basic/pricing_behavior.sample.json"
+            ],
             optimizer_models_fns=[
                 _DataSamplesPath + "/basic/pricing_optimizer.sample.json"
             ],

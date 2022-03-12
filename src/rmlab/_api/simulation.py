@@ -45,42 +45,6 @@ class APISimulationInternal(APIFetchInternal):
                     total=(dates.last_flight_departure - dates.first_flight_load).days,
                     initial=(dates.current - dates.first_flight_load).days,
                 ),
-                # "pending-schedules": tqdm(
-                #     desc=f"Pending schedules (SC{scen_id})",
-                #     unit="schedule",
-                #     total=schedules_count.total,
-                #     initial=schedules_count.pending,
-                # ),
-                # "live-schedules": tqdm(
-                #     desc=f"Live schedules (SC{scen_id})",
-                #     unit="schedule",
-                #     total=schedules_count.total,
-                #     initial=schedules_count.live,
-                # ),
-                # "past-schedules": tqdm(
-                #     desc=f"Past schedules (SC{scen_id})",
-                #     unit="schedule",
-                #     total=schedules_count.total,
-                #     initial=schedules_count.past,
-                # ),
-                "pending-flights": tqdm(
-                    desc=f"Pending flights (SC{scen_id})",
-                    unit="flight",
-                    total=flights_count.total,
-                    initial=flights_count.pending,
-                ),
-                "live-flights": tqdm(
-                    desc=f"Live flights (SC{scen_id})",
-                    unit="flight",
-                    total=flights_count.total,
-                    initial=flights_count.live,
-                ),
-                "past-flights": tqdm(
-                    desc=f"Past flights (SC{scen_id})",
-                    unit="flight",
-                    total=flights_count.total,
-                    initial=flights_count.past,
-                ),
             }
 
             while not stop_event.is_set():
@@ -93,15 +57,17 @@ class APISimulationInternal(APIFetchInternal):
                     schedules_count,
                     flights_count,
                 ) = await self._fetch_info(scen_id)
-                
-                pbars["local"].n = pbars["local"].total - (dates.next - dates.current).days
-                pbars["global"].n = pbars["global"].total - (dates.last_flight_departure - dates.current).days
-                # pbars["pending-schedules"].n = schedules_count.pending
-                # pbars["live-schedules"].n = schedules_count.live
-                # pbars["past-schedules"].n = schedules_count.past
-                pbars["pending-flights"].n = flights_count.pending
-                pbars["live-flights"].n = flights_count.live
-                pbars["past-flights"].n = flights_count.past
+
+                # TODO: Make these prints compatible with progress bars:
+                # print(f"Flights (past/live/pending): {flights_count.past}/{flights_count.live}/{flights_count.pending}              ", end='\r')
+                # print(f"Schedules (past/live/pending): {schedules_count.past}/{schedules_count.live}/{schedules_count.pending}              ", end='\r')
+                pbars["local"].n = (
+                    pbars["local"].total - (dates.next - dates.current).days
+                )
+                pbars["global"].n = (
+                    pbars["global"].total
+                    - (dates.last_flight_departure - dates.current).days
+                )
 
                 for pb in pbars.values():
                     pb.update()

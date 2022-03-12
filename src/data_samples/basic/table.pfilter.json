@@ -22,6 +22,6 @@
   {
     "filter_class": "network",
     "filter_content": "",
-    "pmodel_id": "customers_choice.mnlmultiple_bl1.json"
+    "pmodel_id": "customers_choice.mnl_bl1.json"
   }
 ]

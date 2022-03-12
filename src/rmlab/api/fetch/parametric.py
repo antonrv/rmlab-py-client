@@ -13,10 +13,10 @@ class APIFetchParametric(APIFetchInternal):
         """Fetch a list of all parametric filters of scenario from server.
 
         Args:
-            scen_id (int): Scenario ID.
+            scen_id (int): Scenario ID
 
         Returns:
-            List of parametric filters.
+            List of parametric filters
         """
 
         return await self._fetch_bounded_items(scen_id, PFilter)
@@ -25,10 +25,10 @@ class APIFetchParametric(APIFetchInternal):
         """Fetch a list of all parametric models of scenario from server.
 
         Args:
-            scen_id (int): Scenario ID.
+            scen_id (int): Scenario ID
 
         Returns:
-            List of parametric models.
+            List of parametric models
         """
 
         return await self._fetch_bounded_items(scen_id, PModel)

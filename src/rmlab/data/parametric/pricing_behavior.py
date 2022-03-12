@@ -75,8 +75,8 @@ def make_pricing_behavior_from_json(
 
     if not isinstance(content, dict):
         raise TypeError(f"Expected dict format in {filename_or_dict}")
-    
-    content : dict
+
+    content: dict
 
     if content["type"] == "rake_straight":
 

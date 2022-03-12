@@ -37,7 +37,7 @@ class APIFetchCore(APIFetchInternal):
             scen_id (int): Scenario ID
 
         Returns:
-            A tuple of 4 with information about the scenario.
+            A 4-tuple with information about the scenario.
         """
 
         return await self._fetch_info(scen_id)
@@ -46,10 +46,10 @@ class APIFetchCore(APIFetchInternal):
         """Fetch a list of all aircrafts of scenario from server.
 
         Args:
-            scen_id (int): Scenario ID.
+            scen_id (int): Scenario ID
 
         Returns:
-            List of aircrafts.
+            List of aircrafts
         """
 
         return await self._fetch_bounded_items(scen_id, Aircraft)
@@ -58,10 +58,10 @@ class APIFetchCore(APIFetchInternal):
         """Fetch a list of all airlines of scenario from server.
 
         Args:
-            scen_id (int): Scenario ID.
+            scen_id (int): Scenario ID
 
         Returns:
-            List of airlines.
+            List of airlines
         """
 
         return await self._fetch_bounded_items(scen_id, Airline)
@@ -70,10 +70,10 @@ class APIFetchCore(APIFetchInternal):
         """Fetch a list of all airport of scenario from server.
 
         Args:
-            scen_id (int): Scenario ID.
+            scen_id (int): Scenario ID
 
         Returns:
-            List of airport.
+            List of airport
         """
 
         return await self._fetch_bounded_items(scen_id, Airport)
@@ -82,10 +82,10 @@ class APIFetchCore(APIFetchInternal):
         """Fetch a list of all countries of scenario from server.
 
         Args:
-            scen_id (int): Scenario ID.
+            scen_id (int): Scenario ID
 
         Returns:
-            List of countries.
+            List of countries
         """
 
         return await self._fetch_bounded_items(scen_id, Country)
@@ -94,10 +94,10 @@ class APIFetchCore(APIFetchInternal):
         """Fetch a list of all cities of scenario from server.
 
         Args:
-            scen_id (int): Scenario ID.
+            scen_id (int): Scenario ID
 
         Returns:
-            List of cities.
+            List of cities
         """
 
         return await self._fetch_bounded_items(scen_id, City)
@@ -106,10 +106,10 @@ class APIFetchCore(APIFetchInternal):
         """Fetch a list of all citysectors of scenario from server.
 
         Args:
-            scen_id (int): Scenario ID.
+            scen_id (int): Scenario ID
 
         Returns:
-            List of citysectors.
+            List of citysectors
         """
 
         return await self._fetch_bounded_items(scen_id, CitySector)
@@ -118,10 +118,10 @@ class APIFetchCore(APIFetchInternal):
         """Fetch a list of all sectors of scenario from server.
 
         Args:
-            scen_id (int): Scenario ID.
+            scen_id (int): Scenario ID
 
         Returns:
-            List of sectors.
+            List of sectors
         """
 
         return await self._fetch_bounded_items(scen_id, Sector)
@@ -130,10 +130,10 @@ class APIFetchCore(APIFetchInternal):
         """Fetch a list of all cityroutes of scenario from server.
 
         Args:
-            scen_id (int): Scenario ID.
+            scen_id (int): Scenario ID
 
         Returns:
-            List of cityroutes.
+            List of cityroutes
         """
 
         return await self._fetch_bounded_items(scen_id, CityRoute)
@@ -142,10 +142,10 @@ class APIFetchCore(APIFetchInternal):
         """Fetch a list of all routes of scenario from server.
 
         Args:
-            scen_id (int): Scenario ID.
+            scen_id (int): Scenario ID
 
         Returns:
-            List of routes.
+            List of routes
         """
 
         return await self._fetch_bounded_items(scen_id, Route)
@@ -156,11 +156,11 @@ class APIFetchCore(APIFetchInternal):
         """Fetch a list of sectors associated to an airline from server.
 
         Args:
-            scen_id (int): Scenario ID.
-            airline_id (str): Airline ID.
+            scen_id (int): Scenario ID
+            airline_id (str): Airline ID
 
         Returns:
-            List of sectors.
+            List of sectors
         """
 
         return await self._fetch_airline_locations_items(scen_id, airline_id, Sector)
@@ -171,11 +171,11 @@ class APIFetchCore(APIFetchInternal):
         """Fetch a list of citysectors associated to an airline from server.
 
         Args:
-            scen_id (int): Scenario ID.
-            airline_id (str): Airline ID.
+            scen_id (int): Scenario ID
+            airline_id (str): Airline ID
 
         Returns:
-            List of citysectors.
+            List of citysectors
         """
 
         return await self._fetch_airline_locations_items(
@@ -186,11 +186,11 @@ class APIFetchCore(APIFetchInternal):
         """Fetch a list of routes associated to an airline from server.
 
         Args:
-            scen_id (int): Scenario ID.
-            airline_id (str): Airline ID.
+            scen_id (int): Scenario ID
+            airline_id (str): Airline ID
 
         Returns:
-            List of routes.
+            List of routes
         """
 
         return await self._fetch_airline_locations_items(scen_id, airline_id, Route)
@@ -201,11 +201,11 @@ class APIFetchCore(APIFetchInternal):
         """Fetch a list of cityroutes associated to an airline from server.
 
         Args:
-            scen_id (int): Scenario ID.
-            airline_id (str): Airline ID.
+            scen_id (int): Scenario ID
+            airline_id (str): Airline ID
 
         Returns:
-            List of cityroutes.
+            List of cityroutes
         """
 
         return await self._fetch_airline_locations_items(scen_id, airline_id, CityRoute)
@@ -216,11 +216,11 @@ class APIFetchCore(APIFetchInternal):
         """Fetch a list of sectors ids associated to an airline from server.
 
         Args:
-            scen_id (int): Scenario ID.
-            airline_id (str): Airline ID.
+            scen_id (int): Scenario ID
+            airline_id (str): Airline ID
 
         Returns:
-            List of sectors.
+            List of sectors
         """
 
         return await self._fetch_airline_locations_ids(scen_id, airline_id, Sector)
@@ -231,11 +231,11 @@ class APIFetchCore(APIFetchInternal):
         """Fetch a list of citysectors ids associated to an airline from server.
 
         Args:
-            scen_id (int): Scenario ID.
-            airline_id (str): Airline ID.
+            scen_id (int): Scenario ID
+            airline_id (str): Airline ID
 
         Returns:
-            List of citysectors.
+            List of citysectors
         """
 
         return await self._fetch_airline_locations_ids(scen_id, airline_id, CitySector)
@@ -246,11 +246,11 @@ class APIFetchCore(APIFetchInternal):
         """Fetch a list of routes ids associated to an airline from server.
 
         Args:
-            scen_id (int): Scenario ID.
-            airline_id (str): Airline ID.
+            scen_id (int): Scenario ID
+            airline_id (str): Airline ID
 
         Returns:
-            List of routes.
+            List of routes
         """
 
         return await self._fetch_airline_locations_ids(scen_id, airline_id, Route)
@@ -261,11 +261,11 @@ class APIFetchCore(APIFetchInternal):
         """Fetch a list of cityroutes associated to an airline from server.
 
         Args:
-            scen_id (int): Scenario ID.
-            airline_id (str): Airline ID.
+            scen_id (int): Scenario ID
+            airline_id (str): Airline ID
 
         Returns:
-            List of cityroutes.
+            List of cityroutes
         """
 
         return await self._fetch_airline_locations_ids(scen_id, airline_id, CityRoute)
@@ -292,7 +292,7 @@ class APIFetchCore(APIFetchInternal):
             ValueError: If only `airline_id` is defined
 
         Returns:
-            List of identifiers of unbounded items.
+            List of identifiers of unbounded items
         """
 
         return await self._fetch_unbounded_ids(
@@ -353,7 +353,7 @@ class APIFetchCore(APIFetchInternal):
             ValueError: If only `airline_id` is defined
 
         Returns:
-            List of identifiers of unbounded items.
+            List of identifiers of unbounded items
         """
 
         return await self._fetch_unbounded_ids(
@@ -385,7 +385,7 @@ class APIFetchCore(APIFetchInternal):
             ValueError: If none of `citysector_id`, `sector_id` is defined
 
         Returns:
-            List of flights.
+            List of flights
         """
 
         return await self._fetch_unbounded_items(

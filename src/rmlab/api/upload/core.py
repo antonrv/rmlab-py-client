@@ -14,7 +14,7 @@ from rmlab.data.items import (
 
 
 class APIUploadCore(APIUploadInternal):
-    """Exposes functions for uploading local data to the RMLab server."""
+    """Exposes functions for uploading local data to the server."""
 
     async def upload_aircrafts(self, scen_id: int, data_fn: str) -> None:
         """Upload a set of aircrafts defined in a file.

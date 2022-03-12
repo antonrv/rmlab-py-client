@@ -15,6 +15,24 @@ class FileExtensions(Enum):
     JSON = ".json"
     CSV = ".csv"
 
+
+class CurrencyKind(Enum):
+    """All recognized currencies"""
+
+    CROATIAN_KUNA = "hrk"
+    CZECH_KORUNA = "czk"
+    DANISH_KRONE = "dkk"
+    EURO = "eur"
+    HUNGARIAN_FORINT = "hug"
+    MOLDOVAN_KEY = "mdl"
+    NORWEGIAN_KRONE = "nok"
+    POLISH_ZLOTY = "pln"
+    POUND_STERLING = "gbp"
+    SWEDISH_KRONA = "sek"
+    SWISS_FRANC = "chf"
+    UKRAINIAN_HRYVNIA = "uah"
+    US_DOLLAR = "usd"
+
     @classmethod
     def str_to_enum_value(cls, v: str):
         return cls.__dict__["_value2member_map_"][v.lower()]
@@ -150,7 +168,7 @@ class OptimizationSelectorFilterKind(Enum):
 
 class TimeUnit(Enum):
     """Enumerations for time units in optimization selector."""
-    
+
     DAY = "day"
     MONTH = "month"
     YEAR = "year"
@@ -166,7 +184,7 @@ class TimeUnit(Enum):
 
 class OptimizationForecasterKind(Enum):
     """All implemented forecaster kinds."""
-    
+
     Q_FORECAST = "q-forecast"
     BAYES = "bayes"
 
@@ -177,7 +195,7 @@ class OptimizationForecasterKind(Enum):
 
 class OptimizationAggregatorKind(Enum):
     """All implemented ways to aggregate historic data."""
-    
+
     UNIFORM = "uniform"
     EXPONENTIAL = "exponential"
 
@@ -188,7 +206,7 @@ class OptimizationAggregatorKind(Enum):
 
 class OptimizationMaximizerKind(Enum):
     """All implemented revenue maximization algorithms."""
-    
+
     DP_QSD = "qsd"
 
     @classmethod
@@ -198,7 +216,7 @@ class OptimizationMaximizerKind(Enum):
 
 class OptimizationEffectsKind(Enum):
     """All implemented post-optimization effects."""
-    
+
     NONE = "none"
     COMMIT_THRESHOLDS = "commit"
 
@@ -206,17 +224,18 @@ class OptimizationEffectsKind(Enum):
     def str_to_enum_value(cls, v: str):
         return cls.__dict__["_value2member_map_"][v.lower()]
 
+
 class ParametricFilterClassKind(Enum):
     """All implemented filter class kinds."""
-    
-    IN_PERIOD = 'in_period'
-    FLIGHT_NUMBER = 'flight_number'
-    AIRLINE = 'airline'
-    SECTOR = 'sector'
-    ROUTE = 'route'
-    CITYSECTOR = 'citysector'
-    CITYROUTE = 'cityroute'
-    NETWORK = 'network'
+
+    IN_PERIOD = "in_period"
+    FLIGHT_NUMBER = "flight_number"
+    AIRLINE = "airline"
+    SECTOR = "sector"
+    ROUTE = "route"
+    CITYSECTOR = "citysector"
+    CITYROUTE = "cityroute"
+    NETWORK = "network"
 
     @classmethod
     def str_to_enum_value(cls, v: str):

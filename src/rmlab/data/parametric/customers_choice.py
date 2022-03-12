@@ -104,11 +104,14 @@ class Multinomial(BaseChoiceModel):
     parameter $prob_{reject}$ in [0, 1], so that the probability of rejecting all offers is always fixed to $prob_{reject}$.
 
     The probability of accepting any booking offer is thus $1 - prob_{reject}$, and the
-    acceptance probabilities of the offers given no-rejection are weighted according to a score
+    acceptance probabilities of the offers given no-rejection are weighted according to a score *s*
     computed from their prices *p*:
     $$
-      s = \exp(-p/ \\beta)
+      s = \exp(-p/ \\beta).
     $$
+
+    Note that regarding $\\beta$ sensitivity, its magnitude corresponds to the *unit*
+    currency (eg: *euros*, *gbps*, ..., and **not** *euro cents* or *gbp pennies*, ...).
 
     Args:
       class_name (str): Customers class
@@ -201,7 +204,7 @@ def make_customers_choice_model_from_json(
     if not isinstance(content, dict):
         raise ValueError(f"Expected dict format in {filename_or_dict}")
 
-    content : dict
+    content: dict
 
     if len(content) > 0:
         models = list()

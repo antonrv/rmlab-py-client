@@ -9,7 +9,9 @@ from rmlab.api.upload.parametric.pricing import APIUploadPricingModels
 
 from rmlab._version import __version__
 
-_DataSamplesPath = str(pathlib.Path(os.path.realpath(__file__)).parent.parent) + '/data_samples/'
+_DataSamplesPath = (
+    str(pathlib.Path(os.path.realpath(__file__)).parent.parent) + "/data_samples/"
+)
 
 
 class APIUploadRemove(
@@ -38,11 +40,12 @@ async def test_upload_tables():
 
         await api.upload_customers_choice_model(
             scen_id=scen_id,
-            data_fn=_DataSamplesPath + "/basic/customers_choice.mnlmultiple_bl1.json",
+            data_fn=_DataSamplesPath + "/basic/customers_choice.mnl_bl1.json",
         )
 
         await api.upload_pricing_range_model(
-            scen_id=scen_id, data_fn=_DataSamplesPath + "/basic/pricing_range.sample.json"
+            scen_id=scen_id,
+            data_fn=_DataSamplesPath + "/basic/pricing_range.sample.json",
         )
 
         await api.upload_pricing_behavior_model(
@@ -111,7 +114,7 @@ async def test_reset_upload_get():
                 _DataSamplesPath + "/basic/customers_request.poisson_bl1.json"
             ],
             choice_models_fns=[
-                _DataSamplesPath + "/basic/customers_choice.mnlmultiple_bl1.json"
+                _DataSamplesPath + "/basic/customers_choice.mnl_bl1.json"
             ],
         )
 
@@ -119,7 +122,9 @@ async def test_reset_upload_get():
         await api.upload_batch_pricing_models(
             scen_id,
             range_models_fns=[_DataSamplesPath + "/basic/pricing_range.sample.json"],
-            behavior_models_fns=[_DataSamplesPath + "/basic/pricing_behavior.sample.json"],
+            behavior_models_fns=[
+                _DataSamplesPath + "/basic/pricing_behavior.sample.json"
+            ],
             optimizer_models_fns=[
                 _DataSamplesPath + "./basic/pricing_optimizer.sample.json"
             ],

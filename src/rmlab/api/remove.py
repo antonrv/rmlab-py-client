@@ -1,7 +1,7 @@
 """Interface for remote data removal
 
 This script provides a APIRemove context manager exposing functions 
-for removing data from the RMLab server.
+for removing data from the server.
 """
 
 from rmlab._api.remove import APIRemoveInternal

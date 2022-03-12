@@ -87,8 +87,8 @@ def make_pricing_range_from_json(filename_or_dict: Union[str, dict]) -> RangeMod
 
     if not isinstance(content, dict):
         raise TypeError(f"Expected dict format in {filename_or_dict}")
-    
-    content : dict
+
+    content: dict
 
     tags = None
     if "tags" in content:

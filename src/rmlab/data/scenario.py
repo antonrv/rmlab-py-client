@@ -64,7 +64,6 @@ class ScenarioDates(Scenario):
             datetime.strptime(chp, DateFormat) for chp in self.checkpoints
         ]
         self.upload_time = datetime.strptime(self.upload_time, DateTimeSecFormat)
-        
 
 
 @dataclass

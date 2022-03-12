@@ -10,7 +10,7 @@ from rmlab._data.enums import (
 
 
 class APIUploadCustomersModels(APIUploadInternal):
-    """Exposes functions for uploading customers models data to the RMLab server."""
+    """Exposes functions for uploading customers models data to the server."""
 
     async def upload_customers_request_model(
         self,

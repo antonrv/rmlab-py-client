@@ -12,7 +12,7 @@ from rmlab.data.flight import (
 
 
 class APIUploadFlightData(APIUploadInternal):
-    """Interface to upload integration data to server"""
+    """Interface to upload flight data to server"""
 
     async def upload_flights(
         self,
