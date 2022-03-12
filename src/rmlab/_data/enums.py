@@ -17,6 +17,11 @@ class FileExtensions(LowerStringEnumValues):
     CSV = ".csv"
 
 
+class DataRemoveKind(LowerStringEnumValues):
+    COMPLETE = "full"
+    HISTORIC = "restart"
+
+
 class CurrencyKind(LowerStringEnumValues):
     """All recognized currencies"""
 
