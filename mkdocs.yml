@@ -1,5 +1,5 @@
 theme:
-  name: "readthedocs"
+  name: "material"
   highlightjs: true
 
 plugins:
