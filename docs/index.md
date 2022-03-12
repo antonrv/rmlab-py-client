@@ -2,7 +2,9 @@
 
 This client provides python bindings for RMLab services at **[rmlab.net](https://rmlab.net)**, available upon registration.
 
-**Simulation:**
+We offer *simulation* and *revenue optimization* services to airline companies.
+
+**Simulation as a service:**
 
 * Unlimited number of competing carriers.
 
@@ -10,24 +12,26 @@ This client provides python bindings for RMLab services at **[rmlab.net](https:/
 
 * Statistical sampling for modelling customers behavior, sensible to seasonality and events.
 
+* Validation of pricing algorithms given demand patterns before deploying to production.
 
-**Revenue optimization:**
+
+**Revenue optimization as a service:**
 
 * Process arbitrarily large sets of historic data.
 
-* Run state of the art algorithms for forecasting and optimization.
+* Run state-of-the-art algorithms for forecasting and optimization.
 
 * Fine-grain optimization per flight level.
 
 * AI-based adaptive forecasters & optimizers operating on nightly runs.
 
 
-**Server infrastructure:**
+**Server infrastructure characteristics:**
 
-* Hosted in **[Google Cloud Platform](https://cloud.google.com)**
+* World-wide availability hosted in **[Google Cloud Platform](https://cloud.google.com)**.
 
-* Data scalability over high-performance in-memory storage servers.
+* Data scalability across high-performance in-memory storage servers.
 
 * Per-customer fully isolated compute and data environments.
 
-* Optional access through encrypted VPN.
+* End-to-end TLS encryption (optional IPsec access).
