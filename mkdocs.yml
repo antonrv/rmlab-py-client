@@ -11,7 +11,7 @@ site_url: https://rmlab.net
 repo_url: https://github.com/antonrv/rmlab-py-client
 
 extra:
-    version: 0.1.0-beta.11
+    version: 0.1.0-beta.12
 
 markdown_extensions:
   - pymdownx.snippets
