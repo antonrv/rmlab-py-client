@@ -4,19 +4,20 @@ layer for correctness."""
 from enum import Enum
 
 
-class DataRemoveKind(Enum):
-    COMPLETE = "full"
-    HISTORIC = "restart"
+class LowerStringEnumValues(Enum):
+    @classmethod
+    def str_to_enum_value(cls, v: str):
+        return cls.__dict__["_value2member_map_"][v.lower()]
 
 
-class FileExtensions(Enum):
+class FileExtensions(LowerStringEnumValues):
     """All possible extensions of uploadable files"""
 
     JSON = ".json"
     CSV = ".csv"
 
 
-class CurrencyKind(Enum):
+class CurrencyKind(LowerStringEnumValues):
     """All recognized currencies"""
 
     CROATIAN_KUNA = "hrk"
@@ -33,43 +34,27 @@ class CurrencyKind(Enum):
     UKRAINIAN_HRYVNIA = "uah"
     US_DOLLAR = "usd"
 
-    @classmethod
-    def str_to_enum_value(cls, v: str):
-        return cls.__dict__["_value2member_map_"][v.lower()]
 
-
-class ParametricModelKind(Enum):
+class ParametricModelKind(LowerStringEnumValues):
     """All possible enumerations for types of parametric models"""
 
     CUSTOMERS = "customers"
     PRICING = "pricing"
 
-    @classmethod
-    def str_to_enum_value(cls, v: str):
-        return cls.__dict__["_value2member_map_"][v.lower()]
 
-
-class CustomersModelKind(Enum):
+class CustomersModelKind(LowerStringEnumValues):
     """All possible enumerations for types of customers models"""
 
     REQUEST = "request"
     CHOICE = "choice"
 
-    @classmethod
-    def str_to_enum_value(cls, v: str):
-        return cls.__dict__["_value2member_map_"][v.lower()]
 
-
-class PricingModelKind(Enum):
+class PricingModelKind(LowerStringEnumValues):
     """All possible enumerations for types of pricing models"""
 
     RANGE = "range"
     BEHAVIOR = "behavior"
     OPTIMIZER = "optimizer"
-
-    @classmethod
-    def str_to_enum_value(cls, v: str):
-        return cls.__dict__["_value2member_map_"][v.lower()]
 
 
 class DayOfWeek(Enum):
@@ -84,11 +69,11 @@ class DayOfWeek(Enum):
     SUNDAY = 7
 
     @classmethod
-    def int_to_enum_value(cls, v: str):
+    def int_to_enum_value(cls, v: int):
         return cls.__dict__["_value2member_map_"][v]
 
 
-class ScenarioDayStatus(Enum):
+class ScenarioDayStatus(LowerStringEnumValues):
     """All possible enumerations of daily status"""
 
     EMPTY = "empty"
@@ -100,12 +85,8 @@ class ScenarioDayStatus(Enum):
     SIMULATED = "simulated"
     OPTIMIZED = "optimized"
 
-    @classmethod
-    def str_to_enum_value(cls, v: str):
-        return cls.__dict__["_value2member_map_"][v.lower()]
 
-
-class ScenarioState(Enum):
+class ScenarioState(LowerStringEnumValues):
     """All possible enumerations of scenario states"""
 
     EMPTY = "empty"
@@ -113,12 +94,8 @@ class ScenarioState(Enum):
     PAUSED = "paused"
     FINISHED = "finished"
 
-    @classmethod
-    def str_to_enum_value(cls, v: str):
-        return cls.__dict__["_value2member_map_"][v.lower()]
 
-
-class FlightDataKind(Enum):
+class FlightDataKind(LowerStringEnumValues):
     """All possible enumerations for types of flight data"""
 
     ACTUAL_BOOKS = "actual-books"
@@ -128,12 +105,8 @@ class FlightDataKind(Enum):
     PRICE_PER_SEAT_SETTINGS = "pps-settings"
     EVENTS = "events"
 
-    @classmethod
-    def str_to_enum_value(cls, v: str):
-        return cls.__dict__["_value2member_map_"][v.lower()]
 
-
-class FlightEvent(Enum):
+class FlightEvent(LowerStringEnumValues):
     """All possible enumerations for flight events"""
 
     FLIGHT_LOADED = "flight-loaded"
@@ -146,12 +119,8 @@ class FlightEvent(Enum):
     OPERATOR_EDIT_THRESHOLDS = "operator-edit-thresholds"
     OPERATOR_DYNAMIC_TO_EXPECTED = "operator-dynamic-to-expected"
 
-    @classmethod
-    def str_to_enum_value(cls, v: str):
-        return cls.__dict__["_value2member_map_"][v.lower()]
 
-
-class OptimizationSelectorFilterKind(Enum):
+class OptimizationSelectorFilterKind(LowerStringEnumValues):
     """All possible enumerations for optimization selector kinds."""
 
     DAY_OF_WEEK = "day-of-week"
@@ -160,10 +129,6 @@ class OptimizationSelectorFilterKind(Enum):
     SCHEDULE = "schedule"
     FLIGHT_NUMBER = "flight-number"
     SEAT_CAPACITY = "seat-capacity"
-
-    @classmethod
-    def str_to_enum_value(cls, v: str):
-        return cls.__dict__["_value2member_map_"][v.lower()]
 
 
 class TimeUnit(Enum):
@@ -182,50 +147,34 @@ class TimeUnit(Enum):
         return cls.__dict__["_value2member_map_"][v]
 
 
-class OptimizationForecasterKind(Enum):
+class OptimizationForecasterKind(LowerStringEnumValues):
     """All implemented forecaster kinds."""
 
     Q_FORECAST = "q-forecast"
     BAYES = "bayes"
 
-    @classmethod
-    def str_to_enum_value(cls, v: str):
-        return cls.__dict__["_value2member_map_"][v.lower()]
 
-
-class OptimizationAggregatorKind(Enum):
+class OptimizationAggregatorKind(LowerStringEnumValues):
     """All implemented ways to aggregate historic data."""
 
     UNIFORM = "uniform"
     EXPONENTIAL = "exponential"
 
-    @classmethod
-    def str_to_enum_value(cls, v: str):
-        return cls.__dict__["_value2member_map_"][v.lower()]
 
-
-class OptimizationMaximizerKind(Enum):
+class OptimizationMaximizerKind(LowerStringEnumValues):
     """All implemented revenue maximization algorithms."""
 
     DP_QSD = "qsd"
 
-    @classmethod
-    def str_to_enum_value(cls, v: str):
-        return cls.__dict__["_value2member_map_"][v.lower()]
 
-
-class OptimizationEffectsKind(Enum):
+class OptimizationEffectsKind(LowerStringEnumValues):
     """All implemented post-optimization effects."""
 
     NONE = "none"
     COMMIT_THRESHOLDS = "commit"
 
-    @classmethod
-    def str_to_enum_value(cls, v: str):
-        return cls.__dict__["_value2member_map_"][v.lower()]
 
-
-class ParametricFilterClassKind(Enum):
+class ParametricFilterClassKind(LowerStringEnumValues):
     """All implemented filter class kinds."""
 
     IN_PERIOD = "in_period"
@@ -236,7 +185,3 @@ class ParametricFilterClassKind(Enum):
     CITYSECTOR = "citysector"
     CITYROUTE = "cityroute"
     NETWORK = "network"
-
-    @classmethod
-    def str_to_enum_value(cls, v: str):
-        return cls.__dict__["_value2member_map_"][v.lower()]
