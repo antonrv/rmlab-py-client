@@ -273,7 +273,7 @@ class APIUploadCore(APIUploadInternal):
         """Upload a set of items defined in files to server.
 
         Args:
-            scen_id (int): _description_
+            scen_id (int): Scenario ID
             aircraft_items_fn (Optional[str], optional): File name with aircraft items. Defaults to None.
             airline_items_fn (Optional[str], optional): File name with airline items. Defaults to None.
             airport_items_fn (Optional[str], optional): File name with airport items. Defaults to None.
@@ -282,7 +282,7 @@ class APIUploadCore(APIUploadInternal):
             schedule_items_fn (Optional[str], optional): File name with flights schedule items. Defaults to None.
 
         Raises:
-            FileNotFoundError: _description_
+            FileNotFoundError: If any of the files does not exist
         """
 
         not_existing_fns = [

@@ -162,14 +162,14 @@ def parse_data_from_json(
 
     Args:
         filename_or_var (Union[str, dict, list]): Filename or instance of `format`
-        format (Union[str,dict], optional): _description_. Defaults to dict.
 
     Raises:
         FileNotFoundError: If filename is not found
         ValueError: If type is not recognized
 
     Returns:
-        Tuple[str, str, Mapping[str, Mapping[str, Any]]]: _description_
+        Tuple[str, str, Mapping[str, Mapping[str, Any]]]: Tuple with
+            model ID, source filename, md5hash of content, and content
     """
 
     if isinstance(filename_or_var, str):
