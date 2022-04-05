@@ -28,14 +28,9 @@ class APISimulation(APISimulationInternal):
         """
 
         await self._submit_call(
-            resource=self._api_endpoints.operation_checkpoint,
-            verb="post",
-            data={
-                "scen_id": scen_id,
-                "checkpoints": [
-                    datetime.strftime(chp, DateFormat) for chp in checkpoints
-                ],
-            },
+            "api-operation-simulation-checkpoint",
+            scen_id=scen_id,
+            checkpoints=[datetime.strftime(chp, DateFormat) for chp in checkpoints],
         )
 
     async def trigger_simulation(
@@ -62,21 +57,14 @@ class APISimulation(APISimulationInternal):
                 )
 
             await self._submit_call(
-                resource=self._api_endpoints.operation_checkpoint,
-                verb="post",
-                data={
-                    "scen_id": scen_id,
-                    "checkpoints": [datetime.strftime(next, DateFormat)],
-                },
+                "api-operation-simulation-checkpoint",
+                scen_id=scen_id,
+                checkpoints=[datetime.strftime(next, DateFormat)],
             )
 
         trigger_task = asyncio.create_task(
             self._submit_call(
-                is_async=True,
-                resource=self._api_endpoints.operation_trigger,
-                verb="post",
-                data={"scen_id": scen_id, "operation": "auto"},
-                return_type="json",
+                "api-operation-simulation-trigger", scen_id=scen_id, operation="auto"
             )
         )
 

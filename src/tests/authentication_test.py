@@ -2,9 +2,13 @@ import os, pytest
 from dataclasses import dataclass
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError
-from rmlab_http_client import AsyncClient, HTTPClientBasic
-from rmlab._api.base import APIBaseInternal
-from rmlab._api.endpoints import BaseURL
+from rmlab_http_client import Cache
+from rmlab._api.base import (
+    APIBaseInternal,
+    BaseURL,
+    _ExpectedCredentialsKeys,
+    _ExpectedEndpointsIds,
+)
 from rmlab_errors import AuthenticationError
 from rmlab._version import __version__
 
@@ -58,54 +62,40 @@ def test_web_is_up(base_urls):
             urlopen(Request(base_urls.auth, headers=headers))
 
 
-async def test_log_in_out(login_data, base_urls):
+async def test_session_implicit_args():
 
-    auth_data = ":".join(list(login_data.__dict__.values()) + [__version__])
-
-    login_client = AsyncClient(
-        HTTPClientBasic,
-        timeout_seconds=180,
-        op_address=base_urls.auth,
-        op_basic=auth_data,
-        address=base_urls.auth,
-        auth_data=auth_data,
-    )
-
-    login_resp = await login_client.submit_request(
-        resource="/auth/user/login", verb="post", return_type="json"
-    )
-
-    assert "access_token" in login_resp
-    assert "refresh_token" in login_resp
-    assert "services" in login_resp
-    assert "scenarios" in login_resp
-    assert "username" in login_resp
-    assert "workgroup" in login_resp
-
-    async with HTTPClientBasic(
-        address=base_urls.auth, auth_data=auth_data
-    ) as logout_client:
-
-        logout_resp = await logout_client.submit_request(
-            resource="/auth/user/logout", verb="post"
-        )
-
-        assert logout_resp is None
-
-
-async def test_session_args(login_data):
-
-    async with APIBaseInternal(**login_data.__dict__):
-        pass
-
-
-async def test_session_env_vars(login_data):
+    Cache._credentials = None
+    Cache._endpoints = None
 
     async with APIBaseInternal():
         pass
 
+    for ep_id in _ExpectedEndpointsIds:
+        assert ep_id in Cache._endpoints
 
-async def test_session_fail(login_data):
+    for cred_id in _ExpectedCredentialsKeys:
+        assert cred_id in Cache._credentials
+
+
+async def test_session_explicit_args(login_data):
+
+    Cache._credentials = None
+    Cache._endpoints = None
+
+    async with APIBaseInternal(**login_data.__dict__):
+        pass
+
+    for ep_id in _ExpectedEndpointsIds:
+        assert ep_id in Cache._endpoints
+
+    for cred_id in _ExpectedCredentialsKeys:
+        assert cred_id in Cache._credentials
+
+
+async def test_session_fail():
+
+    Cache._credentials = None
+    Cache._endpoints = None
 
     with pytest.raises(AuthenticationError):
         async with APIBaseInternal(
