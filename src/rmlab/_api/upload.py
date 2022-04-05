@@ -1,5 +1,8 @@
 import os, logging
-from typing import List, Optional, Union
+from typing import Optional, Union
+
+from rmlab_http_client.types import FileExtensionType
+
 from rmlab._api.base import APIBaseInternal
 from rmlab._data.conversions import (
     C2S_FlightDataName2ConvertFunction,
@@ -25,8 +28,6 @@ from rmlab.data.parametric.pricing_range import make_pricing_range_from_json
 
 
 _Logger = logging.getLogger(__name__)
-
-_AllowedExtensions: List[str] = [".json", ".csv"]
 
 
 class APIUploadInternal(APIBaseInternal):
@@ -57,30 +58,17 @@ class APIUploadInternal(APIBaseInternal):
             raise FileNotFoundError(data_fn)
 
         _, ext = os.path.splitext(data_fn)
-        if ext not in _AllowedExtensions:
-            raise ValueError(
-                f"Unhandled file extension `{ext}`, allowed: {_AllowedExtensions}"
-            )
-
-        if not os.path.exists(data_fn):
-            raise FileNotFoundError(f"File `{data_fn}` does not exist")
+        ext: str = FileExtensionType.str_to_enum_value(ext.replace(".", "")).value
 
         _Logger.debug(f"Uploading `{category.__name__}` items")
 
-        with open(data_fn, "rb") as file:
-
-            await self._submit_call(
-                is_async=False,
-                resource=self._api_endpoints.data_bounded,
-                verb="post",
-                data={
-                    "scen_id": str(scen_id),
-                    "kind": "table",
-                    "name": category.__name__.lower(),
-                    "extension": ext,
-                },
-                file=file,
-            )
+        await self._submit_call(
+            "api-data-bounded-post",
+            scen_id=scen_id,
+            category=category.__name__.lower(),
+            file=data_fn,
+            extension=ext,
+        )
 
         _Logger.debug(f"File `{data_fn}` of category `{category.__name__}` uploaded")
 
@@ -118,31 +106,19 @@ class APIUploadInternal(APIBaseInternal):
             )
 
         _, ext = os.path.splitext(data_fn)
-        if ext not in _AllowedExtensions:
-            raise ValueError(
-                f"Unhandled file extension `{ext}`, allowed: {_AllowedExtensions}"
-            )
-
-        if not os.path.exists(data_fn):
-            raise FileNotFoundError(f"File `{data_fn}` does not exist")
+        ext: str = FileExtensionType.str_to_enum_value(ext.replace(".", "")).value
 
         _Logger.debug(f"Uploading `{category.__name__}` items")
 
-        with open(data_fn, "rb") as file:
-
-            await self._submit_call(
-                is_async=True,
-                resource=self._api_endpoints.data_unbounded,
-                verb="post",
-                data={
-                    "scen_id": str(scen_id),
-                    "category": category.__name__.lower(),
-                    "citysector_id": str(citysector_id),
-                    "sector_id": str(sector_id),
-                    "extension": ext,
-                },
-                file=file,
-            )
+        await self._submit_call(
+            "api-data-unbounded-post",
+            scen_id=scen_id,
+            category=category.__name__.lower(),
+            citysector_id=citysector_id,
+            sector_id=sector_id,
+            file=data_fn,
+            extension=ext,
+        )
 
         _Logger.debug(f"File `{data_fn}` of category `{category.__name__}` uploaded")
 
@@ -188,16 +164,13 @@ class APIUploadInternal(APIBaseInternal):
         kind = UploadableDataClassName2DataKind[flight_data_class_name]
 
         await self._submit_call(
-            resource=self._api_endpoints.data_flight_post,
-            verb="post",
-            data={
-                "scen_id": scen_id,
-                "flight_id": flight_id,
-                "kind": kind,
-                "citysector_id": str(citysector_id),
-                "sector_id": str(sector_id),
-                "data": data,
-            },
+            "api-data-flight-post",
+            scen_id=scen_id,
+            flight_id=flight_id,
+            kind=kind,
+            citysector_id=citysector_id,
+            sector_id=sector_id,
+            data=data,
         )
 
     async def _upload_parametric_model(
@@ -239,24 +212,19 @@ class APIUploadInternal(APIBaseInternal):
             raise ValueError(f"Unexpected value of `{parametric_kind}`")
 
         _, ext = os.path.splitext(data_fn)
+        ext: str = FileExtensionType.str_to_enum_value(ext.replace(".", "")).value
 
         _Logger.debug(f"Uploading `{parametric_kind.value}` `{kind.value}` model")
 
-        id = os.path.basename(data_fn).split(".")[-2]
+        pmodel_id = os.path.basename(data_fn)
 
-        with open(data_fn, "rb") as file:
+        await self._submit_call(
+            "api-data-pmodel-post",
+            scen_id=str(scen_id),
+            kind=parametric_kind.value + "_" + kind.value,
+            pmodel_id=pmodel_id,
+            file=data_fn,
+            extension=ext,
+        )
 
-            await self._submit_call(
-                is_async=False,
-                resource=self._api_endpoints.data_bounded,
-                verb="post",
-                data={
-                    "scen_id": str(scen_id),
-                    "kind": parametric_kind.value + "_" + kind.value,
-                    "name": id,
-                    "extension": ext,
-                },
-                file=file,
-            )
-
-        _Logger.debug(f"File `{data_fn}` uploaded")
+        _Logger.debug(f"File `{data_fn}` uploaded as pmodel with id `{pmodel_id}`")

@@ -1,4 +1,5 @@
 from typing import Any, List, Mapping, Optional, Tuple
+
 from rmlab._data.enums import FlightDataKind, ScenarioState
 from rmlab._data.types import (
     AirlineLocation,
@@ -6,6 +7,7 @@ from rmlab._data.types import (
     UnboundedItem,
     fields_of_dataclass,
 )
+from rmlab_http_client import Cache
 
 from rmlab._api.base import APIBaseInternal
 from rmlab._data.conversions import S2C_DataKind2ConvertFunction
@@ -43,8 +45,7 @@ class APIFetchInternal(APIBaseInternal):
         """
 
         summary = await self._submit_call(
-            resource=self._api_endpoints.summary + "/" + str(scen_id),
-            return_type="json",
+            "api-data-summary-get-single", scen_id=scen_id
         )
 
         return self._process_summary(scen_id, summary)
@@ -100,10 +101,9 @@ class APIFetchInternal(APIBaseInternal):
             )
 
         resp_data = await self._submit_call(
-            resource=self._api_endpoints.data_bounded
-            + f"/{scen_id}/{category.__name__.lower()}/all",
-            verb="get",
-            return_type="json",
+            "api-data-bounded-get-all",
+            scen_id=scen_id,
+            category=category.__name__.lower(),
         )
 
         return [category(**itm) for itm in resp_data["items"]]
@@ -133,10 +133,10 @@ class APIFetchInternal(APIBaseInternal):
             )
 
         return await self._submit_call(
-            resource=self._api_endpoints.data_airline_locations
-            + f"/{scen_id}/{airline_id}/{location_type.__name__.lower()}/ids",
-            verb="get",
-            return_type="json",
+            "api-data-airline-locations-get-ids",
+            scen_id=scen_id,
+            airline_id=airline_id,
+            location_type=location_type.__name__.lower(),
         )
 
     async def _fetch_airline_locations_items(
@@ -163,10 +163,10 @@ class APIFetchInternal(APIBaseInternal):
             )
 
         items = await self._submit_call(
-            resource=self._api_endpoints.data_airline_locations
-            + f"/{scen_id}/{airline_id}/{location_type.__name__.lower()}/items",
-            verb="get",
-            return_type="json",
+            "api-data-airline-locations-get-items",
+            scen_id=scen_id,
+            airline_id=airline_id,
+            location_type=location_type.__name__.lower(),
         )
 
         return [location_type(**item) for item in items]
@@ -204,11 +204,9 @@ class APIFetchInternal(APIBaseInternal):
                 f"Category `{category.__name__}` must inherit from `UnboundedItem`"
             )
 
-        opt_args = [str(arg) for arg in [citysector_id, airline_id, sector_id]]
-
-        if all([arg == "None" for arg in opt_args]):
+        if airline_id is None and citysector_id is None and sector_id is None:
             raise ValueError(
-                f"At least one of `citysector_id` `airline_id`, `sector_id` must be defined"
+                f"Require definition of `citysector_id`, `airline_id` or `sector_id`"
             )
 
         if airline_id is not None and (citysector_id is None and sector_id is None):
@@ -217,11 +215,12 @@ class APIFetchInternal(APIBaseInternal):
             )
 
         return await self._submit_call(
-            resource=self._api_endpoints.data_unbounded_ids
-            + f"/{scen_id}/{category.__name__.lower()}/"
-            + "/".join(opt_args),
-            verb="get",
-            return_type="json",
+            "api-data-unbounded-get-ids",
+            scen_id=scen_id,
+            category=category.__name__.lower(),
+            citysector_id=citysector_id,
+            airline_id=airline_id,
+            sector_id=sector_id,
         )
 
     async def _fetch_unbounded_items(
@@ -263,9 +262,12 @@ class APIFetchInternal(APIBaseInternal):
 
         fields = fields_of_dataclass(category)
 
-        opt_args = {"citysector_id": citysector_id, "sector_id": sector_id}
+        endpoint_id = "api-data-unbounded-get-fields"
+        ep = Cache.get_endpoint(endpoint_id)
 
-        endpoint_limit = self._api_endpoints_limits.data_unbounded_fields
+        endpoint_limit = ep.arguments.limit_of("ids")
+        if endpoint_limit is None:
+            endpoint_limit = float("inf")
 
         if len(ids) > endpoint_limit:
 
@@ -280,16 +282,13 @@ class APIFetchInternal(APIBaseInternal):
                     chunk_end = -1
 
                 raw_list = await self._submit_call(
-                    resource=self._api_endpoints.data_unbounded_fields,
-                    verb="get",
-                    data={
-                        "scen_id": scen_id,
-                        "category": category.__name__.lower(),
-                        **opt_args,
-                        "ids": ids[chunk_start:chunk_end],
-                        "fields": fields,
-                    },
-                    return_type="json",
+                    endpoint_id,
+                    scen_id=scen_id,
+                    category=category.__name__.lower(),
+                    citysector_id=citysector_id,
+                    sector_id=sector_id,
+                    ids=ids[chunk_start:chunk_end],
+                    fields=fields,
                 )
 
                 ret_fields += [category(**fields) for fields in raw_list]
@@ -299,16 +298,13 @@ class APIFetchInternal(APIBaseInternal):
         else:
 
             raw_list = await self._submit_call(
-                resource=self._api_endpoints.data_unbounded_fields,
-                verb="get",
-                data={
-                    "scen_id": scen_id,
-                    "category": category.__name__.lower(),
-                    **opt_args,
-                    "ids": ids,
-                    "fields": fields,
-                },
-                return_type="json",
+                endpoint_id,
+                scen_id=scen_id,
+                category=category.__name__.lower(),
+                citysector_id=citysector_id,
+                sector_id=sector_id,
+                ids=ids,
+                fields=fields,
             )
 
             return [category(**fields) for fields in raw_list]
@@ -344,7 +340,12 @@ class APIFetchInternal(APIBaseInternal):
                 f"Require definition of either `citysector_id` or `sector_id`"
             )
 
-        endpoint_limit = self._api_endpoints_limits.data_flight
+        endpoint_id = "api-data-flight-get"
+        ep = Cache.get_endpoint(endpoint_id)
+
+        endpoint_limit = ep.arguments.limit_of("ids")
+        if endpoint_limit is None:
+            endpoint_limit = float("inf")
 
         if len(ids) > endpoint_limit:
 
@@ -359,16 +360,12 @@ class APIFetchInternal(APIBaseInternal):
                     chunk_end = -1
 
                 flights_data = await self._submit_call(
-                    resource=self._api_endpoints.data_flight,
-                    verb="get",
-                    data={
-                        "scen_id": scen_id,
-                        "ids": ids[chunk_start:chunk_end],
-                        "kind": kind.value,
-                        "citysector_id": str(citysector_id),
-                        "sector_id": str(sector_id),
-                    },
-                    return_type="json",
+                    endpoint_id,
+                    scen_id=scen_id,
+                    ids=ids[chunk_start:chunk_end],
+                    kind=kind.value,
+                    citysector_id=citysector_id,
+                    sector_id=sector_id,
                 )
 
                 ret_data += [
@@ -383,16 +380,12 @@ class APIFetchInternal(APIBaseInternal):
         else:
 
             flights_data = await self._submit_call(
-                resource=self._api_endpoints.data_flight,
-                verb="get",
-                data={
-                    "scen_id": scen_id,
-                    "ids": ids,
-                    "kind": kind.value,
-                    "citysector_id": str(citysector_id),
-                    "sector_id": str(sector_id),
-                },
-                return_type="json",
+                endpoint_id,
+                scen_id=scen_id,
+                ids=ids,
+                kind=kind.value,
+                citysector_id=citysector_id,
+                sector_id=sector_id,
             )
 
             return [

@@ -15,8 +15,14 @@ class APIRemoveInternal(APIBaseInternal):
             kind (DataRemoveKind): Type of removal.
         """
 
-        await self._submit_call(
-            resource=self._api_endpoints.data_reset,
-            verb="post",
-            data={"scen_id": str(scen_id), "kind": kind.value},
-        )
+        if kind.value == "full":
+
+            await self._submit_call("api-data-remove-full", scen_id=scen_id)
+
+        elif kind.value == "restart":
+
+            await self._submit_call("api-data-remove-restart", scen_id=scen_id)
+
+        else:
+
+            raise ValueError(f"Unknown kind `{kind}`")

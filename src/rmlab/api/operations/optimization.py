@@ -35,16 +35,11 @@ class APIOptimization(APIBaseInternal):
             )
 
         await self._submit_call(
-            is_async=True,
-            resource=self._api_endpoints.operation_trigger,
-            verb="post",
-            data={
-                "scen_id": scen_id,
-                "operation": "rms-fine",
-                "airline_id": airline_id,
-                "citysector_id": str(citysector_id),
-                "sector_id": str(sector_id),
-            },
+            "api-operation-optimize-trigger",
+            scen_id=scen_id,
+            airline_id=airline_id,
+            citysector_id=citysector_id,
+            sector_id=sector_id,
         )
 
     async def schedule_optimization_pass(
@@ -75,15 +70,10 @@ class APIOptimization(APIBaseInternal):
             )
 
         await self._submit_call(
-            is_async=True,
-            resource=self._api_endpoints.operation_trigger,
-            verb="post",
-            data={
-                "scen_id": scen_id,
-                "operation": "rms-schedule",
-                "datetime": datetime.strftime(date_time, DateTimeMinFormat),
-                "airline_id": airline_id,
-                "citysector_id": str(citysector_id),
-                "sector_id": str(sector_id),
-            },
+            "api-operation-optimize-schedule",
+            scen_id=scen_id,
+            date_time=datetime.strftime(date_time, DateTimeMinFormat),
+            airline_id=airline_id,
+            citysector_id=citysector_id,
+            sector_id=sector_id,
         )
