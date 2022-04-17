@@ -1,4 +1,4 @@
-# RMLab Python Client
+# RMLab Python Client Documentation
 
 This client provides python bindings for RMLab services at **[rmlab.net](https://rmlab.net)**, available upon registration.
 

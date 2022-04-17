@@ -1,0 +1,6 @@
+{
+  "type" : "rake_straight",
+  "seats_per_dbd" : 0.15,
+  "zero_shift" : 0.06,
+  "squeeze" : 0.7
+}

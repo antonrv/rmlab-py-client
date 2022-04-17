@@ -1,0 +1,6 @@
+{
+  "granularity" : 10,
+  "min_fare" : 40,
+  "max_fare" : 500,
+  "lowest_tag" : "Q"
+}

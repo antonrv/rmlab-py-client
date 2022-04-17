@@ -1,0 +1,64 @@
+theme:
+  name: "material"
+  highlightjs: true
+
+plugins:
+  - search
+  - mkdocstrings
+
+site_name: RMLab Python Client
+site_url: https://rmlab.net
+repo_url: https://github.com/antonrv/rmlab-py-client
+
+extra:
+    version: 0.1.0
+
+markdown_extensions:
+  - pymdownx.snippets
+  - admonition
+  - codehilite
+  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - Home: index.md
+  - Getting started:
+    - Installation: installation.md
+    - Introduction: intro.md
+    - Data model: data_model.md
+    - Use cases: use_cases.md
+  - Code reference:
+    - Upload API:
+      - Core items: api/upload/core.md
+      - Customers models: api/upload/parametric/customers.md
+      - Pricing models: api/upload/parametric/pricing.md
+      - Parametric filters: api/upload/parametric/filters.md
+      - Flight data: api/upload/flight_data.md
+    - Fetch API: 
+      - Core items: api/fetch/core.md
+      - Flight data: api/fetch/flight_data.md
+      - Parametric data: api/fetch/parametric_data.md
+    - Remove API: api/remove.md
+    - Operations API: 
+      - Simulation: api/operations/simulation.md
+      - Optimization: api/operations/optimization.md
+    - Data:
+      - Core items: data/items_data.md
+      - Flight data: data/flight_data.md
+      - Scenario data: data/scenario_data.md
+      - Customers models:
+        - Request: data/parametric/customers/request.md
+        - Choice: data/parametric/customers/choice.md
+      - Pricing models:
+        - Range: data/parametric/pricing/range.md
+        - Behavior: data/parametric/pricing/behavior.md
+        - Optimizer: data/parametric/pricing/optimizer.md
+      - Parametric filters: data/parametric/filters.md
+    - Internal: 
+      - Enumerations: internal/enums.md
+      - Types: internal/types.md

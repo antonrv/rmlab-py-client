@@ -1,0 +1,12 @@
+{
+  "business" : {
+    "type" : "mnl_multiple_reject",
+    "beta" : 140.0,
+    "reject_prob": 0.5
+  },
+  "leisure" : {
+    "type" : "mnl_multiple_reject",
+    "beta" : 60.0,
+    "reject_prob": 0.9
+  }
+}

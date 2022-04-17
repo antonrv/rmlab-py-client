@@ -1,0 +1,27 @@
+[
+  {
+    "filter_class": "network",
+    "filter_content": "",
+    "pmodel_id": "pricing_range.sample.json"
+  },
+  {
+    "filter_class": "network",
+    "filter_content": "",
+    "pmodel_id": "pricing_behavior.sample.json"
+  },
+  {
+    "filter_class": "network",
+    "filter_content": "",
+    "pmodel_id": "pricing_optimizer.sample.json"
+  },
+  {
+    "filter_class": "network",
+    "filter_content": "",
+    "pmodel_id": "customers_request.poisson_bl1.json"
+  },
+  {
+    "filter_class": "network",
+    "filter_content": "",
+    "pmodel_id": "customers_choice.mnl_bl1.json"
+  }
+]
