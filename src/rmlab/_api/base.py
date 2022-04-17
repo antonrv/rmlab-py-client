@@ -47,12 +47,15 @@ _ExpectedCredentialsKeys = [
     "workgroup",
 ]
 
-_ExpectedEndpointsIds = [
+_AuthEndpoints = [
     "auth-log-in",
     "auth-log-in-poll-status",
     "auth-log-in-result",
     "auth-log-out",
     "auth-token-refresh",
+]
+
+_ApiEndpoints = [
     "api-discover-user",
     "api-data-bounded-get-meta",
     "api-data-bounded-get-all",
@@ -77,9 +80,11 @@ _ExpectedEndpointsIds = [
     "api-operation-optimization-trigger",
     "api-operation-optimization-schedule",
     "api-monitor-activity-user",
-    "api-monitor-async-status",
-    "api-monitor-async-result",
+    "api-monitor-async-scenario-status",
+    "api-monitor-async-scenario-result",
 ]
+
+_ExpectedEndpointsIds = _AuthEndpoints + _ApiEndpoints
 
 
 def _check_valid_credentials(creds: Mapping[str, Any]):
@@ -90,12 +95,9 @@ def _check_valid_credentials(creds: Mapping[str, Any]):
 
 def _check_valid_endpoints(endpoints_ids: Iterable[str]):
 
-    errs = list()
     for ep_id in endpoints_ids:
         if ep_id not in _ExpectedEndpointsIds:
-            errs.append(RuntimeError(f"Unrecognized endpoint `{ep_id}`"))
-
-    raise_from_list(errs)
+            _Logger.warning(f"Unrecognized endpoint `{ep_id}`")
 
 
 class APIBaseInternal:
@@ -144,9 +146,22 @@ class APIBaseInternal:
     @classmethod
     @property
     def scenarios(cls) -> List[int]:
+        """Return the scenarios integer identifiers.
+
+        Raises:
+            ValueError: If scenarios are not initialized
+
+        Returns:
+            List[int]: Ordered list of integer scenarios ids.
+        """
         scenarios = Cache.get_credential("scenarios")
         if scenarios:
-            return [sc_id for sc_id in scenarios.keys()]
+            scenarios_keys = list(scenarios.keys())
+            if all([isinstance(k, str) for k in scenarios_keys]):
+                scenarios_keys.sort()
+                scenarios_int_keys = {k: scenarios[str(k)] for k in scenarios_keys}
+                Cache.set_credential("scenarios", scenarios_int_keys)
+            return scenarios_keys
         else:
             raise ValueError(f"Scenarios not initialized")
 
@@ -214,8 +229,9 @@ class APIBaseInternal:
 
                 await logout_client.submit_request()
 
-        except Exception:
+        except Exception as exc:
             # Do not propagate exceptions due to log-out
+            _Logger.warning(f"Absorbing log-out exception {exc}")
             pass
 
     async def _submit_call(self, endpoint_id: str, **kwargs) -> Any:
